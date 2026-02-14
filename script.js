@@ -1,7 +1,7 @@
 const typingSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3');
 const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
 const bgAudio = document.getElementById('bg-audio');
-let isMuted = false; // Starts unmuted after interaction
+let isMuted = false;
 
 const entranceScreen = document.getElementById('entrance-screen');
 const entranceTyping = document.getElementById('entrance-typing');
@@ -21,8 +21,6 @@ function typeText(el, text, speed = 50) {
         el.textContent = "";
         const timer = setInterval(() => {
             if (i < text.length) {
-                // Handle \n for line breaks in typing if needed, but here we use textContent
-                // For entrance we use simple textContent for speed
                 el.textContent += text.charAt(i);
                 if (!isMuted && text[i] && text[i] !== ' ') {
                     const s = typingSound.cloneNode();
@@ -38,43 +36,43 @@ function typeText(el, text, speed = 50) {
     });
 }
 
-// Sequence for Entrance
-async function initEntrance() {
-    await new Promise(r => setTimeout(r, 800));
-    await typeText(entranceTyping, "Har safar ke liye...");
-    await new Promise(r => setTimeout(r, 500));
-    entranceTyping.innerHTML += "<br>";
-    await typeText(entranceTyping, "Ek kadam uthana padta hai.", 50);
-
-    entranceActions.classList.remove('hidden');
-}
-
-// Unlock audio on first interaction
+// Unlock audio
 async function unlockAudio() {
     if (bgAudio.paused) {
         bgAudio.volume = 0.18;
-        bgAudio.play().catch(e => console.log("Audio play failed", e));
+        bgAudio.play().catch(e => console.log("Audio play blocked", e));
     }
+}
+
+// Sequence for Entrance
+async function initEntrance() {
+    await new Promise(r => setTimeout(r, 1000));
+    await typeText(entranceTyping, "Good Morning Bhavya...");
+    await new Promise(r => setTimeout(r, 800));
+    entranceTyping.innerHTML += "<br>";
+    await typeText(entranceTyping, "Don't find it strange...", 50);
+    await new Promise(r => setTimeout(r, 800));
+    entranceTyping.innerHTML += "<br>";
+    await typeText(entranceTyping, "Ek chhoti si permission chahiye thi...", 50);
+    entranceActions.classList.remove('hidden');
 }
 
 btnStep1.addEventListener('click', async () => {
     unlockAudio();
     btnStep1.classList.add('hidden');
-    await typeText(entranceTyping, "Aapki ijazat chahiye...");
+    await typeText(entranceTyping, "Main proceed karoon ya suspense bana rahe?");
     btnStep2.classList.remove('hidden');
 });
 
 btnStep2.addEventListener('click', async () => {
     btnStep2.classList.add('hidden');
-    await typeText(entranceTyping, "Ek chhoti si permission... to feel the vibes.");
+    await typeText(entranceTyping, "Aapki ijazat?");
     btnStep3.classList.remove('hidden');
 });
 
 btnStep3.addEventListener('click', () => {
-    // Final Step - Reveal Main Content
     entranceScreen.classList.add('fade-out');
     mainContent.classList.remove('hidden');
-
     setTimeout(() => {
         entranceScreen.style.display = 'none';
         startMainTyping();
