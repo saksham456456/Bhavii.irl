@@ -15,118 +15,135 @@
   <body>
     <div class="grain" aria-hidden="true"></div>
 
-    <header class="hero" id="top">
-      <video class="hero-video" autoplay muted loop playsinline>
-        <source
-          src="https://cdn.coverr.co/videos/coverr-rainy-night-car-ride-1579/1080p.mp4"
-          type="video/mp4"
-        />
-      </video>
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <p class="eyebrow">Built, Not Sent.</p>
-        <h1 class="type-lines" aria-label="Hero message">
-          <span data-text="I could have sent a message."></span>
-          <span data-text="I didn’t."></span>
-          <span class="accent" data-text="Because this mattered."></span>
-        </h1>
-        <button id="sound-toggle" aria-pressed="false">Enable sound</button>
-      </div>
-      <audio id="bg-audio" loop preload="auto">
-        <source
-          src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4f6994545f.mp3?filename=soft-piano-ambient-11334.mp3"
-          type="audio/mpeg"
-        />
-      </audio>
-    </header>
-
-    <main>
-      <section class="story reveal">
-        <p>Some things aren’t impulsive.</p>
-        <p>They’re built slowly.</p>
-        <p>With intention.</p>
-      </section>
-
-      <section class="split reveal" id="effort-proof">
-        <figure class="polaroid">
-          <img
-            src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=900&q=80"
-            alt="Coffee on a table under city lights"
-          />
-          <figcaption>night notes // city quiet</figcaption>
-        </figure>
-        <article>
-          <h2>Not everything here has a face.</h2>
-          <p>Some things are felt better unseen.</p>
-        </article>
-      </section>
-
-      <section class="moments" id="moments">
-        <h2 class="reveal">Micro-moments</h2>
-        <div class="cards">
-          <article class="moment-card reveal" tabindex="0">
-            <h3>The way you laugh when you’re comfortable.</h3>
-            <p>That laugh that starts small, then takes over the whole room.</p>
-          </article>
-          <article class="moment-card reveal" tabindex="0">
-            <h3>How silence with you doesn’t feel awkward.</h3>
-            <p>It feels like a place to breathe, not a gap to fill.</p>
-          </article>
-          <article class="moment-card reveal" tabindex="0">
-            <h3>That calm confidence.</h3>
-            <p>Soft, steady, and somehow louder than words.</p>
-          </article>
+    <!-- Entrance Overlay -->
+    <div id="entrance-screen">
+        <div class="entrance-content">
+            <div id="entrance-typing"></div>
+            <div id="entrance-actions" class="hidden">
+                <button id="btn-step-1" class="entrance-btn">Main proceed karoon?</button>
+                <button id="btn-step-2" class="entrance-btn hidden">Aapki ijazat?</button>
+                <button id="btn-step-3" class="pulse-btn hidden" aria-label="Start Experience">Yeah Sure</button>
+            </div>
         </div>
-      </section>
+    </div>
 
-      <section class="meme reveal" aria-label="A fun break">
-        <p>Me, pretending I didn’t think about you today</p>
-        <div class="loading-bar" role="img" aria-label="Loading bar stuck at 99 percent">
-          <span></span>
-        </div>
-        <small>99% complete</small>
-      </section>
+    <div id="main-content" class="hidden">
+        <header class="hero" id="top">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source
+                src="https://cdn.coverr.co/videos/coverr-rainy-night-car-ride-1579/1080p.mp4"
+                type="video/mp4"
+                />
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <p class="eyebrow">Built, Not Sent.</p>
+                <h1 class="type-lines" aria-label="Hero message">
+                <span data-text="I could have sent a message."></span>
+                <span data-text="I didn’t."></span>
+                <span class="accent" data-text="Because this mattered."></span>
+                </h1>
+            </div>
+            <button id="mute-toggle" aria-label="Toggle sound">🔊</button>
+            <audio id="bg-audio" loop preload="auto">
+                <source
+                src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4f6994545f.mp3?filename=soft-piano-ambient-11334.mp3"
+                type="audio/mpeg"
+                />
+            </audio>
+        </header>
 
-      <section class="confession" id="confession">
-        <div class="particles" aria-hidden="true"></div>
-        <h2 class="pulse">I like you.</h2>
-        <p class="pulse delay">Not impulsively. Intentionally.</p>
-      </section>
+        <main>
+            <section class="story reveal">
+                <p>Some things aren’t impulsive.</p>
+                <p>They’re built slowly.</p>
+                <p>With intention.</p>
+            </section>
 
-      <section class="video-note reveal">
-        <div>
-          <h2>Some things are better said without words.</h2>
-          <p>Faceless. Quiet. Still intentional.</p>
-        </div>
-        <video autoplay muted loop playsinline>
-          <source
-            src="https://cdn.coverr.co/videos/coverr-young-man-holding-coffee-9184/1080p.mp4"
-            type="video/mp4"
-          />
-        </video>
-      </section>
+            <section class="split reveal" id="effort-proof">
+                <figure class="polaroid">
+                <img
+                    src="https://images.unsplash.com/photo-1503104834685-7205e8607eb9?auto=format&fit=crop&q=80&w=1000"
+                    alt="Mysterious silhouette"
+                    class="silhouette-img"
+                />
+                <div class="question-mark">?</div>
+                <figcaption>night notes // city quiet</figcaption>
+                </figure>
+                <article>
+                <h2>Not everything here has a face.</h2>
+                <p>Some things are felt better unseen.</p>
+                </article>
+            </section>
 
-      <section class="cta reveal">
-        <h2>Either way, I’m glad you reached here.</h2>
-        <div class="actions">
-          <button class="ripple yes">🟢 Let’s talk</button>
-          <button class="ripple slow">🟡 Take it slow</button>
-        </div>
-      </section>
-    </main>
+            <section class="moments" id="moments">
+                <h2 class="reveal">Micro-moments</h2>
+                <div class="cards">
+                <article class="moment-card reveal" tabindex="0">
+                    <h3>The way you laugh when you’re comfortable.</h3>
+                    <p>That laugh that starts small, then takes over the whole room.</p>
+                </article>
+                <article class="moment-card reveal" tabindex="0">
+                    <h3>How silence with you doesn’t feel awkward.</h3>
+                    <p>It feels like a place to breathe, not a gap to fill.</p>
+                </article>
+                <article class="moment-card reveal" tabindex="0">
+                    <h3>That calm confidence.</h3>
+                    <p>Soft, steady, and somehow louder than words.</p>
+                </article>
+                </div>
+            </section>
 
-    <footer>
-      <button id="easter-egg">built, not copied</button>
-      <div id="devlog" hidden>
-        <p>Day 1: idea</p>
-        <p>Day 2: design</p>
-        <p>Day 3: courage</p>
-      </div>
-    </footer>
+            <section class="meme reveal" aria-label="A fun break">
+                <p>Me, pretending I didn’t think about you today</p>
+                <div class="loading-bar" role="img" aria-label="Loading bar stuck at 99 percent">
+                <span></span>
+                </div>
+                <small>99% complete</small>
+            </section>
+
+            <section class="confession" id="confession">
+                <div class="particles" aria-hidden="true"></div>
+                <h2 class="pulse">I like you.</h2>
+                <p class="pulse delay">Not impulsively. Intentionally.</p>
+            </section>
+
+            <section class="video-note reveal">
+                <div>
+                <h2>Some things are better said without words.</h2>
+                <p>Faceless. Quiet. Still intentional.</p>
+                </div>
+                <video autoplay muted loop playsinline>
+                <source
+                    src="https://cdn.coverr.co/videos/coverr-young-man-holding-coffee-9184/1080p.mp4"
+                    type="video/mp4"
+                />
+                </video>
+            </section>
+
+            <section class="cta reveal">
+                <h2>Either way, I’m glad you reached here.</h2>
+                <div class="actions">
+                <button class="ripple yes">🟢 Let’s talk</button>
+                <button class="ripple slow">🟡 Take it slow</button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <button id="easter-egg">built, not copied</button>
+            <div id="devlog" hidden>
+                <p>Day 1: idea</p>
+                <p>Day 2: design</p>
+                <p>Day 3: courage</p>
+            </div>
+        </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@latest/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
