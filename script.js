@@ -7,12 +7,45 @@ const entranceScreen = document.getElementById('entrance-screen');
 const entranceTyping = document.getElementById('entrance-typing');
 const entranceActions = document.getElementById('entrance-actions');
 const mainContent = document.getElementById('main-content');
+const storyContent = document.getElementById('story-content');
+const fakeEnd = document.getElementById('fake-end');
+const floatingContainer = document.getElementById('floating-container');
+const lockScreen = document.getElementById('lock-screen');
+const rewardScreen = document.getElementById('reward-screen');
 
 const btnStep1 = document.getElementById('btn-step-1');
 const btnStep2 = document.getElementById('btn-step-2');
 const btnStep3 = document.getElementById('btn-step-3');
 
 const mainLines = document.querySelectorAll('.type-lines span');
+
+// State management
+let experienceState = 'intro'; // intro, fake-end, revealed, locked, reward
+let inactivityTimer;
+let messageIndex = 0;
+let scrollResistanceActive = false;
+let rewardEligible = false;
+let lockShown = false;
+let lastScrollTop = 0;
+
+const teasingMessages = [
+    "…itni shareef banne ki acting kyun? 😏",
+    "Scroll nahi karegi? seriously? 🙄",
+    "You’re trying really hard to behave… 😉",
+    "Acha… control dikhana hai mujhe? 😌",
+    "Par curiosity already jeet rahi hai 🙂",
+    "Sach bol… dekhna hai na neeche kya hai? 🌚",
+    "Main hota na to… rukta hi nahi 😌"
+];
+
+const resistanceMessages = [
+    "Arey… ruk. 🛑",
+    "Itni jaldi give in? 😏",
+    "I said don’t… 🤐",
+    "Control nahi ho raha? 😌",
+    "Good… keep going. 😉",
+    "Exactly what I thought. 🙂"
+];
 
 // Helper for typing effect
 function typeText(el, text, speed = 50) {
@@ -46,14 +79,14 @@ async function unlockAudio() {
 
 // Sequence for Entrance
 async function initEntrance() {
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 500));
     await typeText(entranceTyping, "Good Morning Bhavya...");
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise(r => setTimeout(r, 400));
     entranceTyping.innerHTML += "<br>";
-    await typeText(entranceTyping, "Don't find it strange...", 50);
-    await new Promise(r => setTimeout(r, 800));
+    await typeText(entranceTyping, "Don't find it strange...", 30);
+    await new Promise(r => setTimeout(r, 400));
     entranceTyping.innerHTML += "<br>";
-    await typeText(entranceTyping, "Ek chhoti si permission chahiye thi...", 50);
+    await typeText(entranceTyping, "Ek chhoti si permission chahiye thi...", 30);
     entranceActions.classList.remove('hidden');
 }
 
@@ -75,14 +108,21 @@ btnStep3.addEventListener('click', () => {
     mainContent.classList.remove('hidden');
     setTimeout(() => {
         entranceScreen.style.display = 'none';
-        startMainTyping();
+        startMainFlow();
     }, 1000);
 });
 
+async function startMainFlow() {
+    experienceState = 'intro';
+    await startMainTyping();
+    experienceState = 'fake-end';
+    resetInactivityTimer();
+}
+
 async function startMainTyping() {
     for (const [index, line] of mainLines.entries()) {
-        await new Promise((r) => setTimeout(r, 500 * index + 180));
-        await typeText(line, line.dataset.text || '');
+        await new Promise((r) => setTimeout(r, 300 * index + 100));
+        await typeText(line, line.dataset.text || '', 30);
     }
 }
 
@@ -93,6 +133,206 @@ function raf(time) {
   requestAnimationFrame(raf);
 }
 requestAnimationFrame(raf);
+
+// Inactivity handling
+function resetInactivityTimer() {
+    clearTimeout(inactivityTimer);
+    if (experienceState === 'fake-end') {
+        inactivityTimer = setTimeout(showTeasingMessage, 4000);
+    }
+}
+
+function showTeasingMessage() {
+    if (experienceState !== 'fake-end') return;
+
+    const msg = teasingMessages[messageIndex % teasingMessages.length];
+    createFloatingText(msg);
+    messageIndex++;
+
+    inactivityTimer = setTimeout(showTeasingMessage, 4000);
+}
+
+function createFloatingText(text) {
+    const el = document.createElement('div');
+    el.className = 'floating-msg';
+    el.textContent = text;
+
+    // Random position
+    const x = Math.random() * 60 + 20; // 20-80%
+    const y = Math.random() * 60 + 20; // 20-80%
+    el.style.left = `${x}%`;
+    el.style.top = `${y}%`;
+
+    floatingContainer.appendChild(el);
+
+    gsap.to(el, {
+        opacity: 1,
+        y: -20,
+        duration: 1,
+        onComplete: () => {
+            gsap.to(el, {
+                opacity: 0,
+                y: -40,
+                duration: 1,
+                delay: 2,
+                onComplete: () => el.remove()
+            });
+        }
+    });
+}
+
+// Scroll Handling
+lenis.on('scroll', (e) => {
+    const { scroll, velocity, direction } = e;
+
+    if (experienceState === 'fake-end' && scroll > 50) {
+        if (!scrollResistanceActive) {
+            scrollResistanceActive = true;
+            triggerResistance();
+        }
+    }
+
+    if (experienceState === 'revealed') {
+        // Track for reward eligibility
+        if (Math.abs(velocity) > 40) {
+            rewardEligible = true;
+        }
+
+        // Check for bottom
+        const bottomThreshold = document.documentElement.scrollHeight - window.innerHeight - 50;
+        if (scroll >= bottomThreshold && rewardEligible) {
+            triggerReward();
+        }
+    }
+
+    // Escape attempt: fast scroll up
+    if (scroll > 200 && velocity < -50 && !lockShown && experienceState !== 'reward') {
+        triggerLockScene();
+    }
+
+    resetInactivityTimer();
+});
+
+function triggerResistance() {
+    let resIndex = 0;
+    const interval = setInterval(() => {
+        if (resIndex >= resistanceMessages.length) {
+            clearInterval(interval);
+            revealContent();
+            return;
+        }
+        createFloatingText(resistanceMessages[resIndex]);
+        resIndex++;
+    }, 1500);
+}
+
+function revealContent() {
+    experienceState = 'revealed';
+    storyContent.classList.remove('hidden-content');
+    storyContent.classList.add('visible-content');
+
+    // Fade out fake end
+    gsap.to(fakeEnd, {
+        opacity: 0,
+        duration: 2,
+        onComplete: () => fakeEnd.style.display = 'none'
+    });
+}
+
+// Lock Scene
+function triggerLockScene() {
+    if (lockShown) return;
+    lockShown = true;
+    const previousState = experienceState;
+    experienceState = 'locked';
+
+    lockScreen.classList.remove('hidden');
+    gsap.fromTo(lockScreen, { opacity: 0 }, { opacity: 1, duration: 0.4 });
+    document.body.classList.add('screen-shake');
+
+    const tl = gsap.timeline();
+
+    // Animate chains
+    tl.from('.chain-tl', { x: '-100%', y: '-100%', duration: 0.6, ease: 'power2.out' }, 0)
+      .from('.chain-tr', { x: '100%', y: '-100%', duration: 0.6, ease: 'power2.out' }, 0)
+      .from('.chain-bl', { x: '-100%', y: '100%', duration: 0.6, ease: 'power2.out' }, 0)
+      .from('.chain-br', { x: '100%', y: '100%', duration: 0.6, ease: 'power2.out' }, 0)
+      .from('.lock-wrapper', {
+          scale: 5,
+          opacity: 0,
+          duration: 0.3,
+          ease: 'back.out(1.7)',
+          onComplete: () => {
+              setTimeout(() => document.body.classList.remove('screen-shake'), 300);
+          }
+      }, 0.5);
+
+    // Text phases
+    const phase1 = document.querySelector('.lock-phase-1');
+    const phase2 = document.querySelector('.lock-phase-2');
+    const guidance = document.querySelector('.lock-guidance');
+
+    tl.to(phase1, { opacity: 1, duration: 0.5 }, 1)
+      .to(phase1, { opacity: 0, duration: 0.5, delay: 2 })
+      .call(() => {
+          phase1.classList.add('hidden');
+          phase2.classList.remove('hidden');
+      })
+      .fromTo(phase2, { opacity: 0 }, { opacity: 1, duration: 0.8 })
+      .to(phase2, { opacity: 0, duration: 0.5, delay: 2 })
+      .call(() => {
+          phase2.classList.add('hidden');
+          guidance.classList.remove('hidden');
+      })
+      .fromTo(guidance, { opacity: 0 }, { opacity: 1, duration: 0.8 })
+      .to(lockScreen, {
+          opacity: 0,
+          duration: 1.5,
+          delay: 3,
+          ease: 'power2.inOut',
+          onComplete: () => {
+              lockScreen.classList.add('hidden');
+              experienceState = previousState === 'locked' ? 'revealed' : previousState;
+          }
+      });
+}
+
+// Escape attempt: cursor move
+document.addEventListener('mousemove', (e) => {
+    if (experienceState === 'revealed' && !lockShown && e.clientY < 50 && e.movementY < -15) {
+        triggerLockScene();
+    }
+});
+
+// Escape attempt: beforeunload
+window.addEventListener('beforeunload', (e) => {
+    if (experienceState === 'revealed' && !lockShown) {
+        // Since we can't reliably show the overlay on exit,
+        // we trigger it as a last-resort simulation.
+        triggerLockScene();
+        // Standard confirmation dialog
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+
+// Reward Scene
+function triggerReward() {
+    if (experienceState === 'reward') return;
+    experienceState = 'reward';
+
+    rewardScreen.classList.remove('hidden');
+    gsap.from('.reward-content', { opacity: 0, y: 50, duration: 2, ease: 'power3.out' });
+
+    // Staggered text reveal
+    gsap.from('.reward-secondary p', {
+        opacity: 0,
+        y: 20,
+        duration: 1,
+        stagger: 1.5,
+        delay: 1
+    });
+}
 
 // GSAP Animations
 gsap.registerPlugin(ScrollTrigger);
