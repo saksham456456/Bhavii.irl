@@ -159,6 +159,13 @@ body {
     animation: soft-pulse 3s infinite ease-in-out;
 }
 
+.choice-line {
+    margin-top: 1.5rem;
+    font-style: italic;
+    opacity: 0.5;
+    animation-delay: 1.5s;
+}
+
 @keyframes soft-pulse {
     0%, 100% { opacity: 0.4; transform: scale(0.98); }
     50% { opacity: 0.8; transform: scale(1); }
@@ -288,15 +295,16 @@ body {
 
 /* Reward Screen */
 .reward-screen {
-    background: #000;
-    transition: opacity 2s ease;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(15px);
+    transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .reward-content {
     text-align: center;
     z-index: 10;
     filter: blur(0);
-    animation: breathing 8s infinite ease-in-out;
+    animation: breathing 10s infinite ease-in-out;
 }
 
 @keyframes breathing {

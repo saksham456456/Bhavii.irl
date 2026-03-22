@@ -30,9 +30,8 @@ let lockShown = false;
 let lastScrollTop = 0;
 
 const teasingMessages = [
-    "…itni shareef banne ki acting kyun? 😏",
-    "Scroll nahi karegi? seriously? 🙄",
-    "You’re trying really hard to behave… 😉",
+    "…itni shareef banne ki zarurat nahi hai… 😏",
+    "you’re really trying not to scroll… 😉",
     "Acha… control dikhana hai mujhe? 😌",
     "Par curiosity already jeet rahi hai 🙂",
     "Sach bol… dekhna hai na neeche kya hai? 🌚",
@@ -80,27 +79,27 @@ async function unlockAudio() {
 
 // Sequence for Entrance
 async function initEntrance() {
-    await new Promise(r => setTimeout(r, 500));
-    await typeText(entranceTyping, "Good Morning Bhavya...");
-    await new Promise(r => setTimeout(r, 400));
+    await new Promise(r => setTimeout(r, 800));
+    await typeText(entranceTyping, "Good morning, Bhavya...");
+    await new Promise(r => setTimeout(r, 1000));
     entranceTyping.innerHTML += "<br>";
-    await typeText(entranceTyping, "Don't find it strange...", 30);
-    await new Promise(r => setTimeout(r, 400));
-    entranceTyping.innerHTML += "<br>";
-    await typeText(entranceTyping, "Ek chhoti si permission chahiye thi...", 30);
+    await typeText(entranceTyping, "I was thinking about you...", 40);
+    await new Promise(r => setTimeout(r, 800));
     entranceActions.classList.remove('hidden');
 }
 
 btnStep1.addEventListener('click', async () => {
     unlockAudio();
     btnStep1.classList.add('hidden');
-    await typeText(entranceTyping, "Main proceed karoon ya suspense bana rahe?");
+    await typeText(entranceTyping, "You do this thing… you don’t even realize it.");
+    await new Promise(r => setTimeout(r, 800));
     btnStep2.classList.remove('hidden');
 });
 
 btnStep2.addEventListener('click', async () => {
     btnStep2.classList.add('hidden');
-    await typeText(entranceTyping, "Aapki ijazat?");
+    await typeText(entranceTyping, "I noticed.");
+    await new Promise(r => setTimeout(r, 1000));
     btnStep3.classList.remove('hidden');
 });
 
@@ -212,8 +211,9 @@ lenis.on('scroll', (e) => {
         }
     }
 
-    // Escape attempt: any scroll up when revealed or at fake-end
-    if (scroll > 100 && velocity < -5 && !lockShown && experienceState !== 'reward' && experienceState !== 'intro') {
+    // Escape attempt: only after she disobeys (starts scrolling past warning)
+    const isPastWarning = scroll > 150; // Threshold to consider she "disobeyed"
+    if (isPastWarning && velocity < -5 && !lockShown && (experienceState === 'revealed' || scrollResistanceActive) && experienceState !== 'reward') {
         triggerLockScene();
     }
 
@@ -304,11 +304,11 @@ function triggerLockScene() {
       });
 }
 
-// Escape attempt: cursor move (More sensitive)
+// Escape attempt: cursor move (only after disobeys)
 document.addEventListener('mousemove', (e) => {
-    const isRevealedOrFake = experienceState === 'revealed' || experienceState === 'fake-end';
-    if (isRevealedOrFake && !lockShown && e.clientY < 100) {
-        // If moving towards top or just hovering near top
+    const isDisobeyed = experienceState === 'revealed' || scrollResistanceActive;
+    if (isDisobeyed && !lockShown && e.clientY < 80) {
+        // Only if she has already engaged or seen content
         triggerLockScene();
     }
 });
@@ -330,16 +330,33 @@ function triggerReward() {
     if (experienceState === 'reward') return;
     experienceState = 'reward';
 
+    // Hide all other elements first for total isolation
+    gsap.to(['#main-content > *:not(#reward-screen)', '#floating-container'], {
+        opacity: 0,
+        filter: 'blur(20px)',
+        duration: 1.5,
+        ease: 'power2.inOut'
+    });
+
     rewardScreen.classList.remove('hidden');
-    gsap.from('.reward-content', { opacity: 0, y: 50, duration: 2, ease: 'power3.out' });
+    gsap.fromTo(rewardScreen, { opacity: 0 }, { opacity: 1, duration: 2 });
+
+    gsap.from('.reward-content', {
+        opacity: 0,
+        scale: 1.1,
+        y: 30,
+        duration: 3,
+        ease: 'power2.out'
+    });
 
     // Staggered text reveal
     gsap.from('.reward-secondary p', {
         opacity: 0,
-        y: 20,
-        duration: 1,
-        stagger: 1.5,
-        delay: 1
+        y: 15,
+        duration: 2,
+        stagger: 2,
+        delay: 1.5,
+        ease: 'power1.out'
     });
 }
 
