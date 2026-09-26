@@ -37,6 +37,7 @@ async function initEntrance() {
     entranceTyping.innerHTML += "<br>Ek chhota sa surprise banaya hai tere liye...";
     playSound(squeakSound);
     await new Promise(r => setTimeout(r, 1000));
+    document.getElementById('desktop-warning').style.display = 'block';
     entranceActions.classList.remove('hidden');
 }
 
