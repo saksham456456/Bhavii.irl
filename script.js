@@ -234,6 +234,36 @@ closeExitPopup.addEventListener('click', () => {
     exitPopup.style.opacity = '0';
     exitPopup.style.pointerEvents = 'none';
     playSound(boingSound);
+    // Reset so it can trigger again if she tries again!
+    exitPopupShown = false; 
+});
+
+// Mobile Exit Intent (Intercepting the Back Button)
+window.history.pushState({ noExit: true }, "");
+window.addEventListener('popstate', function(event) {
+    if (!hasReachedEnd) {
+        if (!exitPopupShown) {
+            exitPopup.classList.remove('hidden');
+            exitPopup.style.opacity = '1';
+            exitPopup.style.pointerEvents = 'auto';
+            exitPopup.style.zIndex = '99999';
+            exitPopupShown = true;
+            playSound(squeakSound);
+        }
+        // Push state again to trap them
+        window.history.pushState({ noExit: true }, "");
+    }
+});
+
+// Mobile Exit Intent (Switching tabs)
+document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === 'hidden' && !hasReachedEnd && !exitPopupShown) {
+        exitPopup.classList.remove('hidden');
+        exitPopup.style.opacity = '1';
+        exitPopup.style.pointerEvents = 'auto';
+        exitPopup.style.zIndex = '99999';
+        exitPopupShown = true;
+    }
 });
 
 // Start the whole thing
