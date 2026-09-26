@@ -166,6 +166,7 @@ function triggerMeme() {
         
         stageReveal.classList.remove('hidden');
         stageReveal.classList.add('active');
+        hasReachedEnd = true; // Unlock tab closing
         playSound(tadaSound);
         fireGiftConfetti();
     }, 4000); // show meme for 4 seconds
@@ -198,6 +199,16 @@ function fireGiftConfetti() {
         }());
     }
 }
+
+// --- Prevent accidental tab closing before the reveal ---
+let hasReachedEnd = false;
+window.addEventListener('beforeunload', function (e) {
+    if (!hasReachedEnd) {
+        e.preventDefault();
+        // Modern browsers show a generic warning, but setting returnValue is required.
+        e.returnValue = 'Ruk ja! Abhi surprise baaki hai!';
+    }
+});
 
 // Start the whole thing
 window.onload = initEntrance;
