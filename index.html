@@ -2,147 +2,86 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Built, Not Sent</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Happy Birthday Bhavya! 🎁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="grain" aria-hidden="true"></div>
+    <!-- Floating Clouds -->
+    <div class="background-decorations">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+    </div>
 
-    <!-- Entrance Overlay -->
-    <div id="entrance-screen">
-        <div class="entrance-content">
-            <div id="entrance-typing"></div>
+    <div class="container">
+        
+        <!-- Stage 0: Entrance (Click through) -->
+        <div id="stage-entrance" class="stage active">
+            <h1 id="entrance-typing" class="entrance-text"></h1>
             <div id="entrance-actions" class="hidden">
-                <button id="btn-step-1" class="entrance-btn">Main proceed karoon?</button>
-                <button id="btn-step-2" class="entrance-btn hidden">Yeah Sure</button>
-                <button id="btn-step-3" class="pulse-btn hidden" aria-label="Start Experience">Ijazat Hai</button>
+                <button id="btn-step-1" class="cute-btn">Main proceed karoon?</button>
+                <button id="btn-step-2" class="cute-btn hidden">Pakka? Baad mein mat bolna!</button>
+                <button id="btn-step-3" class="pulse-btn hidden">Chalo Phir! 🚀</button>
             </div>
         </div>
+
+        <!-- Stage 1: Main Typing Sequence -->
+        <div id="stage-typing" class="stage hidden">
+            <h1 id="main-text" class="typing-text"></h1>
+        </div>
+
+        <!-- Stage 2: Moving Button Prank -->
+        <div id="stage-prank" class="stage hidden">
+            <h1 class="prank-title">Click to open your gift! 🎁</h1>
+            <button id="catch-me-btn" class="moving-btn">Click Me!</button>
+        </div>
+
+        <!-- Stage 3: Meme & Apology -->
+        <div id="stage-meme" class="stage hidden">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGZjZTV4NzE1cWVpczZpeWc1YmU3aGZlZ3ZyYmdrcjZsZnV4ZHRnZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/MDJ9IbxxvDUQM/giphy.gif" alt="Funny cat meme" class="meme-img">
+            <h2 class="meme-text">Oh ab jyada pareshan nahi karta hu 😂</h2>
+        </div>
+
+        <!-- Stage 4: Happy Birthday Reveal -->
+        <div id="stage-reveal" class="stage hidden">
+            <div class="cute-card-final">
+                <h1 class="card-title">Happy Birthday, Bhavya! 🎉</h1>
+                <div class="polaroid-cute center-polaroid">
+                    <img src="bhavya.jpg" alt="Bhavya" class="birthday-photo">
+                    <div class="polaroid-caption">Birthday Girl 💖</div>
+                </div>
+                <p class="message-text">
+                    On a serious note, you're absolutely amazing. Aise hi bindass rehna, 
+                    aur zyada smart banne ki zaroorat nahi hai. You're perfect just the way you are!
+                </p>
+                
+                <p class="roses-text" style="color: #d10034; font-weight: bold; margin-bottom: 15px;">
+                    And here are 17 roses for you... 💖<br>
+                    <span style="font-size: 1.5rem; letter-spacing: 5px;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</span>
+                </p>
+
+                <p class="signature">- Tera sabse bada fan</p>
+            </div>
+        </div>
+
     </div>
 
-    <div id="main-content" class="hidden">
-        <header class="hero" id="top">
-            <video class="hero-video" autoplay muted loop playsinline>
-                <source
-                src="https://cdn.coverr.co/videos/coverr-rainy-night-car-ride-1579/1080p.mp4"
-                type="video/mp4"
-                />
-            </video>
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <p class="eyebrow">Built, Not Sent.</p>
-                <h1 class="type-lines" aria-label="Hero message">
-                <span data-text="I could have sent a message."></span>
-                <span data-text="I didn’t."></span>
-                <span class="accent" data-text="Because this mattered."></span>
-                </h1>
-            </div>
-            <button id="mute-toggle" aria-label="Toggle sound">🔊</button>
-            <audio id="bg-audio" loop preload="auto">
-                <source
-                src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4f6994545f.mp3?filename=soft-piano-ambient-11334.mp3"
-                type="audio/mpeg"
-                />
-            </audio>
-        </header>
+    <!-- Funny audio clips -->
+    <audio id="squeak-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
+    <audio id="boing-sound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" preload="auto"></audio>
+    <audio id="tada-sound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
+    
+    <audio id="bruh-sound" src="https://www.myinstants.com/media/sounds/movie_1.mp3" preload="auto"></audio>
+    <audio id="laugh-sound" src="https://www.myinstants.com/media/sounds/laugh-track.mp3" preload="auto"></audio>
+    <audio id="bonk-sound" src="https://www.myinstants.com/media/sounds/bonk_2.mp3" preload="auto"></audio>
+    
+    <!-- Background Music -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2021/11/25/audio_91b3cb0c1a.mp3?filename=quirky-dog-101150.mp3" type="audio/mpeg" />
+    </audio>
 
-        <main>
-            <section class="story reveal">
-                <p>Some things aren’t impulsive.</p>
-                <p>They’re built slowly.</p>
-                <p>With intention.</p>
-            </section>
-
-            <section class="split reveal" id="effort-proof">
-                <figure class="polaroid">
-                <img
-                    src="https://images.unsplash.com/photo-1503104834685-7205e8607eb9?auto=format&fit=crop&q=80&w=1000"
-                    alt="Mysterious silhouette"
-                    class="silhouette-img"
-                />
-                <div class="question-mark">?</div>
-                <figcaption>night notes // city quiet</figcaption>
-                </figure>
-                <article>
-                <h2>Not everything here has a face.</h2>
-                <p>Some things are felt better unseen.</p>
-                </article>
-            </section>
-
-            <section class="moments" id="moments">
-                <h2 class="reveal">Micro-moments</h2>
-                <div class="cards">
-                <article class="moment-card reveal" tabindex="0">
-                    <h3>The way you laugh when you’re comfortable.</h3>
-                    <p>That laugh that starts small, then takes over the whole room.</p>
-                </article>
-                <article class="moment-card reveal" tabindex="0">
-                    <h3>How silence with you doesn’t feel awkward.</h3>
-                    <p>It feels like a place to breathe, not a gap to fill.</p>
-                </article>
-                <article class="moment-card reveal" tabindex="0">
-                    <h3>That calm confidence.</h3>
-                    <p>Soft, steady, and somehow louder than words.</p>
-                </article>
-                </div>
-            </section>
-
-            <section class="meme reveal" aria-label="A fun break">
-                <p>Me, pretending I didn’t think about you today</p>
-                <div class="loading-bar" role="img" aria-label="Loading bar stuck at 99 percent">
-                <span></span>
-                </div>
-                <small>99% complete</small>
-            </section>
-
-            <section class="confession" id="confession">
-                <div class="particles" aria-hidden="true"></div>
-                <h2 class="pulse">I like you.</h2>
-                <p class="pulse delay">Not impulsively. Intentionally.</p>
-            </section>
-
-            <section class="video-note reveal">
-                <div>
-                <h2>Some things are better said without words.</h2>
-                <p>Faceless. Quiet. Still intentional.</p>
-                </div>
-                <video autoplay muted loop playsinline>
-                <source
-                    src="https://cdn.coverr.co/videos/coverr-young-man-holding-coffee-9184/1080p.mp4"
-                    type="video/mp4"
-                />
-                </video>
-            </section>
-
-            <section class="cta reveal">
-                <h2>Either way, I’m glad you reached here.</h2>
-                <div class="actions">
-                <button class="ripple yes">🟢 Let’s talk</button>
-                <button class="ripple slow">🟡 Take it slow</button>
-                </div>
-            </section>
-        </main>
-
-        <footer>
-            <button id="easter-egg">built, not copied</button>
-            <div id="devlog" hidden>
-                <p>Day 1: idea</p>
-                <p>Day 2: design</p>
-                <p>Day 3: courage</p>
-            </div>
-        </footer>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@latest/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
   </body>
