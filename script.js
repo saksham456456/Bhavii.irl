@@ -205,9 +205,35 @@ let hasReachedEnd = false;
 window.addEventListener('beforeunload', function (e) {
     if (!hasReachedEnd) {
         e.preventDefault();
-        // Modern browsers show a generic warning, but setting returnValue is required.
         e.returnValue = 'Ruk ja! Abhi surprise baaki hai!';
     }
+});
+
+// Exit intent popup (Mouse leaves the top of the window)
+const exitPopup = document.getElementById('exit-intent-popup');
+const closeExitPopup = document.getElementById('close-exit-popup');
+let exitPopupShown = false;
+
+document.addEventListener('mouseleave', (e) => {
+    // If mouse moves up towards the address bar/tabs
+    if (e.clientY <= 10 && !hasReachedEnd && !exitPopupShown) {
+        // Must remove display:none essentially by overriding hidden class logic if needed, 
+        // but hidden is opacity:0, z-index:-1. Let's toggle active.
+        exitPopup.classList.remove('hidden');
+        exitPopup.style.opacity = '1';
+        exitPopup.style.pointerEvents = 'auto';
+        exitPopup.style.zIndex = '99999';
+        
+        exitPopupShown = true;
+        playSound(squeakSound);
+    }
+});
+
+closeExitPopup.addEventListener('click', () => {
+    exitPopup.classList.add('hidden');
+    exitPopup.style.opacity = '0';
+    exitPopup.style.pointerEvents = 'none';
+    playSound(boingSound);
 });
 
 // Start the whole thing
